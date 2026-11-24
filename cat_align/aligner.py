@@ -7,6 +7,7 @@ from .data.audio import extract_fbank
 from .data.tokenizer import Tokenizer
 from .models import load_pretrained_encoder
 from .utils.ctc import PhonemeSpan, WordSpan, align_frames
+from .utils.textgrid import format_textgrid
 
 
 class CATAligner:
@@ -34,12 +35,15 @@ class CATAligner:
         audio: str | Path,
         transcript: str,
         pronunciations: Mapping[str, str] | None = None,
-    ) -> list[WordSpan]:
-        """Align one audio file to a transcript, with optional word-to-phoneme overrides."""
+        return_textgrid: bool = False,
+    ) -> list[WordSpan] | str:
+        """Align a transcript and return word spans or Praat TextGrid text."""
         words = self.tokenizer.encode_words(transcript, pronunciations=pronunciations)
         target = [token for _, tokens in words for token in tokens]
-        spans = iter(self.align_ids(audio, target))
-        return [WordSpan(word, tuple(next(spans) for _ in tokens)) for word, tokens in words]
+        phonemes, duration = self.align_ids_with_duration(audio, target)
+        spans = iter(phonemes)
+        word_spans = [WordSpan(word, tuple(next(spans) for _ in tokens)) for word, tokens in words]
+        return format_textgrid(word_spans, duration) if return_textgrid else word_spans
 
     def align_phonemes(
         self, audio: str | Path, phonemes: str | Sequence[str]
@@ -47,15 +51,21 @@ class CATAligner:
         """Align model phoneme symbols given as a sequence or space-separated string."""
         return self.align_ids(audio, self.tokenizer.encode_phones(phonemes))
 
-    @torch.inference_mode()
     def align_ids(self, audio: str | Path, target: list[int]) -> list[PhonemeSpan]:
-        """Run the encoder and align the target phoneme IDs."""
+        """Align target phoneme IDs."""
+        spans, _ = self.align_ids_with_duration(audio, target)
+        return spans
+
+    @torch.inference_mode()
+    def align_ids_with_duration(
+        self, audio: str | Path, target: list[int]
+    ) -> tuple[list[PhonemeSpan], float]:
         features, duration = extract_fbank(audio, num_mel_bins=self.model.idim)
         lengths = torch.tensor([features.size(0)], device=self.device)
         logits, output_lengths = self.model(features.unsqueeze(0).to(self.device), lengths)
         frames = align_frames(logits[0, : int(output_lengths[0])], target)
         frame_rate = self.model.frame_rate
-        return [
+        spans = [
             PhonemeSpan(
                 phoneme=self.tokenizer.tokens[token],
                 start=min(start / frame_rate, duration),
@@ -65,3 +75,4 @@ class CATAligner:
             )
             for token, (start, end) in zip(target, frames)
         ]
+        return spans, duration

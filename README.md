@@ -39,3 +39,16 @@ phones = aligner.align_phonemes("hello.wav", "h ɛ l o ʊ w ə ɹ l d")
 
 `start` 和 `end` 的单位为秒，音素另有 `start_frame` 和 `end_frame`。区间右端不包含在内，默认模型每帧 40 ms。沿用 CTC-TTS 的 blank 帧归属规则，开头和中间的 blank 帧归后一音素，结尾的 blank 帧归最后一个音素。
 
+## 导出 Praat TextGrid
+
+沿用上面的 `aligner`，在调用 `align()` 时传入 `return_textgrid=True`，即可得到包含 `words` 和 `phonemes` 两层的 TextGrid 文本。
+
+```python
+from pathlib import Path
+
+transcript = "i'm from china i'm chinese hello world"
+textgrid = aligner.align("demo.wav", transcript, return_textgrid=True)
+Path("demo.TextGrid").write_text(textgrid, encoding="utf-8")
+```
+
+这段录音的示例输出约 5.91 秒，包含 7 个词和 31 个音素，可用 Praat 打开。[demo.TextGrid](examples/demo.TextGrid)
