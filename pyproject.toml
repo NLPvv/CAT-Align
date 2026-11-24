@@ -22,7 +22,8 @@ Upstream = "https://github.com/thu-spmi/CTC-TTS"
 Weights = "https://huggingface.co/THU-SPMI/CTC-TTS/tree/71b77cb7e5a1f2d5edb7bd5d11c7cde51de16988/multis_peaker"
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
+include = ["cat_align*"]
 
 [tool.setuptools.package-data]
 "cat_align.models" = ["conformer.json"]

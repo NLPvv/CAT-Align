@@ -14,7 +14,6 @@ class CATAligner:
 
     def __init__(
         self,
-        *,
         checkpoint: str | Path,
         tokenizer: str | Path,
         device: str | torch.device = "cpu",
@@ -34,7 +33,6 @@ class CATAligner:
         self,
         audio: str | Path,
         transcript: str,
-        *,
         pronunciations: Mapping[str, str] | None = None,
     ) -> list[WordSpan]:
         """Align one audio file to a transcript, with optional word-to-phoneme overrides."""

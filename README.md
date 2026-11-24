@@ -47,7 +47,7 @@ phones = aligner.align_phonemes("hello.wav", "h ɛ l o ʊ w ə ɹ l d")
 
 ## 自定义 Conformer 配置
 
-使用其他 Conformer 权重时，传入与权重和词表配套的 JSON。可以使用完整的 CTC-TTS 配置，也可以将 `encoder` 对象中的字段直接写在 JSON 顶层。[默认配置](src/cat_align/models/conformer.json) · [CTC-TTS 上游代码](https://github.com/thu-spmi/CTC-TTS)
+使用其他 Conformer 权重时，传入与权重和词表配套的 JSON。可以使用完整的 CTC-TTS 配置，也可以将 `encoder` 对象中的字段直接写在 JSON 顶层。[默认配置](cat_align/models/conformer.json) · [CTC-TTS 上游代码](https://github.com/thu-spmi/CTC-TTS)
 
 ```python
 aligner = CATAligner(

@@ -1,6 +1,6 @@
 CAT Align
 
-The inference encoder in src/cat_align/models/conformer.py adapts Conformer and
+The inference encoder in cat_align/models/conformer.py adapts Conformer and
 VGG2L components from CAT and CTC-TTS. The adaptation keeps the checkpoint
 parameter names and both published Whistle attention implementations while
 removing unrelated architectures and training dependencies.
