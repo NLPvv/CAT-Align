@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cat-align"
+version = "0.1.0"
+description = "CAT-based CTC forced alignment for words and phonemes"
+readme = "README.md"
+requires-python = ">=3.10"
+license-files = ["LICENSE", "NOTICE"]
+dependencies = [
+    "kaldi-native-fbank>=1.22.3",
+    "numpy>=1.24",
+    "soundfile>=0.12",
+    "torch>=2.6",
+    "torchaudio>=2.6",
+]
+
+[project.urls]
+Upstream = "https://github.com/thu-spmi/CTC-TTS"
+Weights = "https://huggingface.co/THU-SPMI/CTC-TTS/tree/71b77cb7e5a1f2d5edb7bd5d11c7cde51de16988/multis_peaker"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"cat_align.models" = ["conformer.json"]

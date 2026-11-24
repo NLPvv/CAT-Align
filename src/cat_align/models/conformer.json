@@ -1,0 +1,15 @@
+{
+  "encoder": {
+    "type": "ConformerNet",
+    "tokens_per_second": 25,
+    "kwargs": {
+      "num_cells": 18,
+      "idim": 80,
+      "hdim": 512,
+      "conv": "vgg2l",
+      "num_heads": 8,
+      "kernel_size": 32,
+      "modernized_atten": true
+    }
+  }
+}

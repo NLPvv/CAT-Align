@@ -1,0 +1,19 @@
+CAT Align
+
+The inference encoder in src/cat_align/models/conformer.py adapts Conformer and
+VGG2L components from CAT and CTC-TTS. The adaptation keeps the checkpoint
+parameter names and both published Whistle attention implementations while
+removing unrelated architectures and training dependencies.
+
+Copyright 2022 Tsinghua University
+Original authors named in the source files include Hongyu Xiang, Keyu An,
+and Huahuan Zheng. The model components are licensed under Apache 2.0.
+
+CAT (Whistle) source
+https://github.com/thu-spmi/CAT/tree/9b8163ec615db2598a5c14fab6722765e03f18b5/cat/shared
+
+CTC-TTS source
+https://github.com/thu-spmi/CTC-TTS/tree/1ed23cf88a98101e62fc5c78cff6519c75bc8baf/ctc_model
+
+The CTC-TTS source references ESPnet's relative positional attention implementation.
+https://github.com/espnet/espnet/pull/2816
