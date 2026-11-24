@@ -48,28 +48,12 @@ class Tokenizer:
             lexicon = LexiconUnpickler(file).load()
 
         state = getattr(lexicon, "state", None)
-        if not isinstance(lexicon, LexiconState) or not isinstance(state, dict):
-            raise ValueError(f"Expected a CAT or CTC-TTS LexiconTokenizer in {path}")
-
         # CTC-TTS uses the short keys and older CTC-TTS/CAT store attributes.
         words = state.get("w2pid", state.get("_w2pid"))
         units = state.get("units", state.get("_units"))
         bos = state.get("bos", state.get("_bos_token"))
         unk = state.get("unk", state.get("_unk_token"))
-        if (
-            not isinstance(words, dict)
-            or not isinstance(units, dict)
-            or not isinstance(bos, str)
-            or not isinstance(unk, str)
-            or bos not in units
-            or unk not in units
-            or any(
-                not isinstance(unit, str) or type(index) is not int or index < 0
-                for unit, index in units.items()
-            )
-            or len(set(units.values())) != len(units)
-        ):
-            raise ValueError(f"Invalid lexicon or vocabulary in {path}")
+        
         return cls(words, units, bos, unk)
 
     def encode_words(
