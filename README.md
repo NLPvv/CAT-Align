@@ -12,7 +12,7 @@ python -m pip install .
 
 ## Python Package Usage (Quick Inference)
 
-准备本地权重 `best-10.pt`、配套词表 `tokenizer_updated.tknz`。默认在 CPU 上推理，可指定 `device="cuda"`。
+准备本地权重 `best-10.pt`、配套词表 `tokenizer_updated.tknz`。默认在 CPU 上推理，可指定 `device="cuda"`。[hugging face](https://huggingface.co/THU-SPMI/CTC-TTS/tree/main/multis_peaker)
 
 ```python
 from cat_align import CATAligner
